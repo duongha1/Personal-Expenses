@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:personal_expenses/assets/color.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   final Function addTx;
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
-  final ColorConstants color = new ColorConstants();
 
   NewTransaction(this.addTx);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
 
   void submitData() {
     final enteredTitle = titleController.text;
@@ -18,7 +23,13 @@ class NewTransaction extends StatelessWidget {
       return;
     }
 
-    addTx(titleController.text, double.parse(amountController.text));
+//widget is special variable in State class, to access to variables in StatefulWidget class
+    widget.addTx(titleController.text, double.parse(amountController.text));
+
+//pop() is to close the sheet
+//of() is required to access to the right navigator
+//context is special variable like widget in State class, give a right to access to your related widget
+    Navigator.of(context).pop();
   }
 
   @override
@@ -49,9 +60,9 @@ class NewTransaction extends StatelessWidget {
               // },
             ),
             TextButton(
-                onPressed: submitData,
-                child: Text('Add Transaction'),
-                style: TextButton.styleFrom(primary: color.primaryColor))
+              onPressed: submitData,
+              child: Text('Add Transaction'),
+            )
           ],
         ),
       ),
