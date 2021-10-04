@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:personal_expenses/transaction.dart';
+import 'package:personal_expenses/assets/color.dart';
+import 'package:personal_expenses/widgets/new_transaction.dart';
+import 'package:personal_expenses/widgets/user_transaction.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,74 +21,42 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction?> transactions = [
-    Transaction(
-        id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: 't2', title: 'New T-shirt', amount: 39.99, date: DateTime.now())
-  ];
+  final ColorConstants color = new ColorConstants();
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+
+  // late String titleInput; //late is marked for null value
+  // late String amountInput;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('MyApp')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Card(
-            child: Container(
-              child: Text('hi'),
+      appBar: AppBar(
+        title: Text('MyApp'),
+        actions: <Widget>[IconButton(onPressed: () {}, icon: Icon(Icons.add))],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
               width: double.infinity,
-              color: Colors.blue,
+              child: Card(child: Text('hi'), color: Colors.blue, elevation: 5),
             ),
-            elevation: 5,
-          ),
-          Card(
-            child: Container(
-              child: Text('List'),
+            Container(
+              child: Card(
+                child: Text('List items'),
+                elevation: 5,
+              ),
             ),
-            elevation: 5,
-          ),
-          Column(
-            children: transactions.map((transaction) {
-              return Card(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        transaction?.amount.toString() ?? '',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Color.fromRGBO(255, 170, 0, 1)),
-                      ),
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Color.fromRGBO(255, 170, 0, 1), width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      padding: EdgeInsets.all(10),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          transaction?.title ?? '',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(transaction?.date.toString() ?? '',
-                            style: TextStyle(color: Colors.grey)),
-                      ],
-                    )
-                  ],
-                ),
-              );
-            }).toList(),
-          )
-        ],
+            UserTransaction()
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
       ),
     );
   }
